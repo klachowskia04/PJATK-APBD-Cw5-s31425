@@ -2,7 +2,7 @@
 
 namespace WebApplication1.Models;
 
-public class Reservation
+public class Reservation : IValidatableObject
 {
     public int Id { get; set; }
 
@@ -21,4 +21,13 @@ public class Reservation
     public TimeOnly EndTime { get; set; }
 
     public string Status { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (EndTime <= StartTime)
+        {
+            yield return new ValidationResult("EndTime must be after StartTime and EndTime",
+                new[] {nameof(EndTime)});
+        }
+    }
 }
